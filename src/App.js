@@ -9,7 +9,7 @@ function App() {
     <div style={{ maxWidth: '960px', margin: '0 auto' }}>
       <Router>
         <Navbar />
-        <Routes>
+        <Routes basename={process.env.PUBLIC_URL}>
           <Route path='/' element={<UserPage />} />
           <Route path='/create' element={<CreatePageTest />} />
           <Route path='/edit/:id' element={<UpdatePageTest />} />
