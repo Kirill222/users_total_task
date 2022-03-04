@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import './User.css'
 
 export const User = ({ user }) => {
   const navigate = useNavigate()
@@ -14,10 +15,13 @@ export const User = ({ user }) => {
   }
 
   return (
-    <li>
-      {user.name}
-      <button onClick={() => editHandler(user.id)}>Edit</button>
-      <button onClick={() => deleteHandler(user.id)}>Delete</button>
+    <li className='user-item'>
+      <div className='user-info'>{user.name}</div>
+
+      <div className='user-buttons'>
+        <button onClick={() => editHandler(user.id)}>Edit</button>
+        <button onClick={() => deleteHandler(user.id)}>Delete</button>
+      </div>
     </li>
   )
 }

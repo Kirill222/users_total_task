@@ -1,6 +1,7 @@
 import { User } from '../../components/User/User'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import './UserPage.css'
 
 export const UserPage = () => {
   const [users, setUsers] = useState([])
@@ -22,7 +23,7 @@ export const UserPage = () => {
   console.log(users)
 
   return (
-    <ul>
+    <ul className='user-list'>
       {users.length &&
         users.map((u) => {
           return <User user={u} key={u.id} />

@@ -1,0 +1,19 @@
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+}
+
+.user-buttons {
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-info {
+  flex-grow: 1;
+}
+
+.user-info:hover {
+  background: grey;
+}

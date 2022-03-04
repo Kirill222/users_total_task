@@ -1,0 +1,15 @@
+.navigation {
+  display: flex;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.nav-item {
+  text-decoration: none;
+  display: block;
+  padding: 10px 15px;
+}
+
+.active {
+  font-weight: bold;
+}
