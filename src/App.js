@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import axios from 'axios'
 import { UserForm } from './components/UserForm/UserForm'
+import { CreatePageTest } from './pages/CreatePageTest/CreatePageTest'
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route path='/create' element={<AddUserPage />} />
         <Route path='/edit/:id' element={<EditPage />} />
         <Route path='/test' element={<UserForm />} />
-        <Route path='/testcreate' element={<UserForm />} />
+        <Route path='/testcreate' element={<CreatePageTest />} />
       </Routes>
     </Router>
   )
