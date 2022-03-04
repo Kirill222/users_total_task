@@ -1,3 +1,8 @@
 .user-list {
   padding: 30px 15px;
 }
+
+.pagination-div {
+  width: 400px;
+  margin: 10px auto 50px;
+}
