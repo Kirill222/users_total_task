@@ -5,6 +5,7 @@ import axios from 'axios'
 
 export const UserForm = () => {
   const navigate = useNavigate()
+  const { id } = useParams()
 
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
@@ -12,6 +13,27 @@ export const UserForm = () => {
   const [gender, setGender] = useState('')
   const [age, setAge] = useState(null)
   const [address, setAddress] = useState('')
+
+  useState(() => {
+    if (id) {
+      const getUser = async () => {
+        const result = await axios.get(
+          `https://kirill.totalavengers.com/api/users/${id}`
+        )
+
+        setFirstname(result.data.firstname)
+        setLastname(result.data.lastname)
+        setEmail(result.data.email)
+        setGender(result.data.gender)
+        setAge(result.data.age)
+        setAddress(result.data.address)
+
+        console.log(result.data)
+      }
+      getUser()
+    }
+    return
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -22,11 +44,19 @@ export const UserForm = () => {
       email,
       gender,
       age,
-      address: 'test address',
+      address,
     }
 
-    await axios.post('https://kirill.totalavengers.com/api/users', newUser)
-    navigate('/')
+    if (id) {
+      await axios.put(
+        `https://kirill.totalavengers.com/api/users/${id}`,
+        newUser
+      )
+      navigate('/')
+    } else {
+      await axios.post('https://kirill.totalavengers.com/api/users', newUser)
+      navigate('/')
+    }
   }
 
   return (
@@ -106,7 +136,7 @@ export const UserForm = () => {
               onChange={(e) => setAddress(e.target.value)}
             />
           </label>
-          <input type='submit' value='Submit' />
+          <input type='submit' value={id ? 'save' : 'add'} />
         </fieldset>
       </form>
     </div>
