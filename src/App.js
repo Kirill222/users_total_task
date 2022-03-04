@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { UserPage } from './pages/UsersPage/UserPage'
+import { AddUserPage } from './pages/AddUserPage/AddUserPage'
+import { EditPage } from './pages/EditPage/EditPage'
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+
+import axios from 'axios'
+import { UserForm } from './components/UserForm/UserForm'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route path='/' element={<UserPage />} />
+        <Route path='/create' element={<AddUserPage />} />
+        <Route path='/edit/:id' element={<EditPage />} />
+        <Route path='/test' element={<UserForm />} />
+        <Route path='/testcreate' element={<UserForm />} />
+      </Routes>
+    </Router>
+  )
 }
 
-export default App;
+export default App
