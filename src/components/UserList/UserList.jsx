@@ -1,7 +1,11 @@
 import axios from 'axios'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Modal } from '../Modal/Modal'
 
 export const UserList = ({ users, count, setCount }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [idOfItemToDelete, setIdOfItemToDelete] = useState(null)
   const navigate = useNavigate()
 
   const editHandler = (id) => {
@@ -12,6 +16,17 @@ export const UserList = ({ users, count, setCount }) => {
     console.log('Delete')
     await axios.delete(`https://kirill.totalavengers.com/api/users/${id}`)
     setCount(count - 1)
+    setIsModalOpen(false)
+  }
+
+  const closeModal = () => {
+    //e.preventDefault()
+    setIsModalOpen(false)
+  }
+
+  const onDeleteButtonClick = (id) => {
+    setIsModalOpen(true)
+    setIdOfItemToDelete(id)
   }
 
   return (
@@ -51,7 +66,7 @@ export const UserList = ({ users, count, setCount }) => {
                   <td>
                     <button
                       className='btn btn-danger'
-                      onClick={() => deleteHandler(u.id)}
+                      onClick={() => onDeleteButtonClick(u.id)}
                     >
                       Delete
                     </button>
@@ -61,6 +76,11 @@ export const UserList = ({ users, count, setCount }) => {
             })}
         </tbody>
       </table>
+      <Modal
+        open={isModalOpen}
+        closeModal={closeModal}
+        deleteHandler={() => deleteHandler(idOfItemToDelete)}
+      />
     </div>
   )
 }
