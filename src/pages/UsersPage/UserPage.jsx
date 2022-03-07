@@ -4,6 +4,8 @@ import Pagination from '@mui/material/Pagination'
 import axios from 'axios'
 import './UserPage.css'
 
+import { UserList } from '../../components/UserList/UserList'
+
 export const UserPage = () => {
   const [users, setUsers] = useState([])
   const [pages, setPages] = useState(0)
@@ -42,14 +44,8 @@ export const UserPage = () => {
 
   return (
     <div>
-      <ul className='user-list'>
-        {users.length &&
-          users.map((u) => {
-            return (
-              <User user={u} key={u.id} setCount={setCount} count={count} />
-            )
-          })}
-      </ul>
+      <UserList users={users} setCount={setCount} count={count} />
+
       <div className='pagination-div'>
         <Pagination
           count={pages}
