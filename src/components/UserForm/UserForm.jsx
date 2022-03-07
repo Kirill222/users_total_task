@@ -6,13 +6,14 @@ import axios from 'axios'
 export const UserForm = () => {
   const navigate = useNavigate()
   const { id } = useParams()
+  const [isError, setIsError] = useState(false)
 
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [email, setEmail] = useState('')
-  const [gender, setGender] = useState('')
+  const [firstname, setFirstname] = useState(null)
+  const [lastname, setLastname] = useState(null)
+  const [email, setEmail] = useState(null)
+  const [gender, setGender] = useState(null)
   const [age, setAge] = useState(null)
-  const [address, setAddress] = useState('')
+  const [address, setAddress] = useState(null)
 
   useState(() => {
     if (id) {
@@ -37,6 +38,7 @@ export const UserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsError(false)
 
     const newUser = {
       firstname,
@@ -45,6 +47,18 @@ export const UserForm = () => {
       gender,
       age,
       address,
+    }
+
+    if (
+      newUser.firstname === null ||
+      newUser.lastname === null ||
+      newUser.email === null ||
+      newUser.gender === null ||
+      newUser.age === null ||
+      newUser.address === null
+    ) {
+      setIsError(true)
+      return
     }
 
     if (id) {
@@ -60,17 +74,17 @@ export const UserForm = () => {
   }
 
   return (
-    <div class='form-style-3'>
+    <div className='form-style-3'>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>User</legend>
           <label>
             <span>
-              Firstname <span class='required'>*</span>
+              Firstname <span className='required'>*</span>
             </span>
             <input
               type='text'
-              class='input-field'
+              className='input-field'
               value={firstname}
               onChange={(e) => setFirstname(e.target.value)}
             />
@@ -78,11 +92,11 @@ export const UserForm = () => {
 
           <label>
             <span>
-              Lastname <span class='required'>*</span>
+              Lastname <span className='required'>*</span>
             </span>
             <input
               type='text'
-              class='input-field'
+              className='input-field'
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
             />
@@ -90,11 +104,11 @@ export const UserForm = () => {
 
           <label>
             <span>
-              Email <span class='required'>*</span>
+              Email <span className='required'>*</span>
             </span>
             <input
               type='email'
-              class='input-field'
+              className='input-field'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -102,9 +116,13 @@ export const UserForm = () => {
 
           <label>
             <span>
-              Gender <span class='required'>*</span>
+              Gender <span className='required'>*</span>
             </span>
-            <select class='select-field'>
+            <select
+              className='select-field'
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            >
               <option value='Gender' disabled selected hidden>
                 Gender
               </option>
@@ -115,11 +133,11 @@ export const UserForm = () => {
 
           <label>
             <span>
-              Age <span class='required'>*</span>
+              Age <span className='required'>*</span>
             </span>
             <input
               type='number'
-              class='input-field'
+              className='input-field'
               value={age}
               onChange={(e) => setAge(parseInt(e.target.value))}
             />
@@ -127,16 +145,19 @@ export const UserForm = () => {
 
           <label>
             <span>
-              Address <span class='required'>*</span>
+              Address <span className='required'>*</span>
             </span>
             <input
               type='text'
-              class='input-field'
+              className='input-field'
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
           </label>
           <input type='submit' value={id ? 'save' : 'add'} />
+          {isError && (
+            <span className='warning'>All fields should be filled in</span>
+          )}
         </fieldset>
       </form>
     </div>
