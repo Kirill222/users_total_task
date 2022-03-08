@@ -3,10 +3,17 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
+//redux stuff
+import { useSelector, useDispatch } from 'react-redux'
+
 export const UserForm = () => {
   const navigate = useNavigate()
   const { id } = useParams()
   const [isError, setIsError] = useState(false)
+
+  const page = useSelector((state) => state.page.pageNumber)
+
+  console.log(page)
 
   const [firstname, setFirstname] = useState(null)
   const [lastname, setLastname] = useState(null)
