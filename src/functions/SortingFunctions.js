@@ -1,13 +1,13 @@
 export const ascOrder = (array, orderBy) => {
-  array.sort((a, b) => {
-    console.log(a[orderBy])
+  const sortedArray = array.sort((a, b) => {
     return a[orderBy] < b[orderBy] ? 1 : -1
   })
+  return sortedArray
 }
 
 export const descOrder = (array, orderBy) => {
-  array.sort((a, b) => {
-    console.log(a[orderBy])
+  const sortedArray = array.sort((a, b) => {
     return a[orderBy] > b[orderBy] ? 1 : -1
   })
+  return sortedArray
 }

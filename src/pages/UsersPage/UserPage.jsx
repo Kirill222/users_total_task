@@ -5,7 +5,6 @@ import './UserPage.css'
 import { ascOrder, descOrder } from '../../functions/SortingFunctions'
 import { UserList } from '../../components/UserList/UserList'
 
-//Redux stuff
 import { useSelector, useDispatch } from 'react-redux'
 import {
   setPageNumberAC,
@@ -14,21 +13,16 @@ import {
 } from '../../redux/action-creators'
 
 export const UserPage = () => {
-  //const [users, setUsers] = useState([])
   const users = useSelector((state) => state.users.users)
+  const filteredUsers = useSelector((state) => state.users.filteredUsers)
   const [pages, setPages] = useState(0)
   const [count, setCount] = useState(0)
-
   const [orderBy, setOrderBy] = useState(null)
   const [order, setOrder] = useState(null)
-
-  const dispatch = useDispatch()
-
   const [filterBy, setFilterBy] = useState(null)
   const [filterValue, setFiltervalue] = useState('')
 
-  //const [filteredUsers, setFilteredUsers] = useState([])
-  const filteredUsers = useSelector((state) => state.users.filteredUsers)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getData = async () => {
@@ -36,17 +30,13 @@ export const UserPage = () => {
         'https://kirill.totalavengers.com/api/users'
       )
       console.log(response.data.items)
-      //setUsers(response.data.items)
-      //setFilteredUsers(response.data.items)
       setPages(response.data.pages)
       setCount(response.data.count)
-
       dispatch(setUsersAC(response.data.items))
       dispatch(setFilteredUsersAC(response.data.items))
 
       return response.data.items
     }
-
     getData()
   }, [count])
 
@@ -61,19 +51,18 @@ export const UserPage = () => {
       `https://kirill.totalavengers.com/api/users?page=${page}`
     )
 
-    //setUsers(response.data.items)
     dispatch(setUsersAC(response.data.items))
-    //setFilteredUsers(response.data.items)
-    // let sorted
-    // if (order === 'asc') {
-    //   sorted = ascOrder(response.data.items, orderBy)
-    // } else if (order === 'desc') {
-    //   sorted = descOrder(response.data.items, orderBy)
-    // } else {
-    //   sorted = response.data.items
-    // }
-    // dispatch(setFilteredUsersAC(sorted))
-    dispatch(setFilteredUsersAC(response.data.items))
+
+    let sorted
+    if (order === 'asc') {
+      sorted = ascOrder(response.data.items, orderBy)
+    } else if (order === 'desc') {
+      sorted = descOrder(response.data.items, orderBy)
+    } else {
+      sorted = response.data.items
+    }
+    console.log(sorted)
+    dispatch(setFilteredUsersAC(sorted))
   }
 
   //console.log(filteredUsers)
