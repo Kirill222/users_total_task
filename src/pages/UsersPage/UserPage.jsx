@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Pagination from '@mui/material/Pagination'
 import axios from 'axios'
 import './UserPage.css'
 import { ascOrder, descOrder } from '../../functions/SortingFunctions'
 import { UserList } from '../../components/UserList/UserList'
+
+import { ModalForm } from '../../components/ModalForm/ModalForm'
+import { UserForm } from '../../components/UserForm/UserForm'
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -22,8 +25,26 @@ export const UserPage = () => {
   const [order, setOrder] = useState(null)
   const [filterBy, setFilterBy] = useState(null)
   const [filterValue, setFilterValue] = useState('')
-
+  const isModalFormOpen = useSelector(
+    (state) => state.modalWindow.isModalFormOpen
+  )
   const dispatch = useDispatch()
+
+  const filterRef = useRef()
+  const onChangeHandlerRef = () => {
+    setFilterValue(filterRef.current.value)
+
+    const filtered = usersS.filter((u) => {
+      const value = u[filterBy].toLowerCase()
+      if (value.includes(filterValue.toLowerCase())) return u
+    })
+    console.log(filteredUsers)
+    //setFilteredUsers(filtered)
+    dispatch(setFilteredUsersAC(filtered))
+  }
+  useEffect(() => {
+    onChangeHandlerRef()
+  }, [filterValue])
 
   useEffect(() => {
     const getData = async () => {
@@ -105,26 +126,6 @@ export const UserPage = () => {
 
   return (
     <div>
-      {/* <div
-        className='forms'
-        style={{ display: 'flex', justifyContent: 'space-between' }}
-      >
-        <FilterForm
-          users={users}
-          setFilteredUsers={setFilteredUsers}
-          filterBy={filterBy}
-          setFilterBy={setFilterBy}
-          filterValue={filterValue}
-          setFiltervalue={setFiltervalue}
-        />
-        <SortingForm
-          filteredUsers={filteredUsers}
-          setFilteredUsers={setFilteredUsers}
-        />
-      </div> */}
-
-      {/*  */}
-
       {/* Filter form starts *************************** */}
 
       <div className='filter-form' style={{ width: '50%' }}>
@@ -154,7 +155,8 @@ export const UserPage = () => {
             placeholder='Value to search'
             name='value'
             value={filterValue}
-            onChange={(e) => onFilterChange(e)}
+            ref={filterRef}
+            onChange={onChangeHandlerRef}
           />
         </form>
       </div>
@@ -214,6 +216,8 @@ export const UserPage = () => {
           onChange={(e, page) => paginationHandler(e, page)}
         />
       </div>
+
+      {isModalFormOpen && <ModalForm />}
     </div>
   )
 }

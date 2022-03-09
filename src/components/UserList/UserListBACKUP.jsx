@@ -3,27 +3,15 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Modal } from '../Modal/Modal'
 
-import { useSelector, useDispatch } from 'react-redux'
-import { openModalFormAC, setEditedUserIdAC } from '../../redux/action-creators'
-
 export const UserList = ({ users, count, setCount }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [idOfItemToDelete, setIdOfItemToDelete] = useState(null)
   const navigate = useNavigate()
 
-  const dispatch = useDispatch()
-
-  const isModalFormOpen = useSelector(
-    (state) => state.modalWindow.isModalFormOpen
-  )
-  const edUId = useSelector((state) => state.editedUser.editedUserId)
-
-  const openModalForm = (userId) => {
-    dispatch(openModalFormAC())
-    dispatch(setEditedUserIdAC(userId))
-    console.log(isModalFormOpen, userId)
+  const editHandler = (id) => {
+    console.log('Edit')
+    navigate(`/edit/${id}`)
   }
-
   const deleteHandler = async (id) => {
     console.log('Delete')
     await axios.delete(`https://kirill.totalavengers.com/api/users/${id}`)
@@ -70,7 +58,7 @@ export const UserList = ({ users, count, setCount }) => {
                   <td>
                     <button
                       className='btn btn-warning'
-                      onClick={() => openModalForm(u.id)}
+                      onClick={() => editHandler(u.id)}
                     >
                       Edit
                     </button>

@@ -18,3 +18,21 @@ export const setFilteredUsersAC = (users) => {
     payload: users,
   }
 }
+
+export const setEditedUserIdAC = (userId) => {
+  return {
+    type: 'SET_EDITED_USER_ID',
+    payload: userId,
+  }
+}
+
+export const openModalFormAC = () => {
+  return {
+    type: 'OPEN_MODAL_FORM',
+  }
+}
+export const closeModalFormAC = () => {
+  return {
+    type: 'CLOSE_MODAL_FORM',
+  }
+}
