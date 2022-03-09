@@ -59,9 +59,9 @@ export const UserPage = () => {
 
     let sorted
     if (order === 'asc') {
-      sorted = ascOrder(response.data.items, orderBy)
-    } else if (order === 'desc') {
       sorted = descOrder(response.data.items, orderBy)
+    } else if (order === 'desc') {
+      sorted = ascOrder(response.data.items, orderBy)
     } else {
       sorted = response.data.items
     }
