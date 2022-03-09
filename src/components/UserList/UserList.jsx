@@ -1,12 +1,13 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Modal } from '../Modal/Modal'
+import { ModalForm } from '../../components/ModalForm/ModalForm'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { openModalFormAC, setEditedUserIdAC } from '../../redux/action-creators'
 
-export const UserList = ({ users, count, setCount }) => {
+export const UserList = ({ users, count, setCount, setUsersS }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [idOfItemToDelete, setIdOfItemToDelete] = useState(null)
   const navigate = useNavigate()
@@ -16,7 +17,6 @@ export const UserList = ({ users, count, setCount }) => {
   const isModalFormOpen = useSelector(
     (state) => state.modalWindow.isModalFormOpen
   )
-  const edUId = useSelector((state) => state.editedUser.editedUserId)
 
   const openModalForm = (userId) => {
     dispatch(openModalFormAC())
@@ -40,6 +40,25 @@ export const UserList = ({ users, count, setCount }) => {
     setIsModalOpen(true)
     setIdOfItemToDelete(id)
   }
+
+  //LOGIC RELATED TO UI UPDATE AFTER UPDATING USER
+  const [changeIndicator, setChangeIndicator] = useState(false)
+  const userId = useSelector((state) => state.editedUser.editedUserId)
+
+  const informUI = (id) => {
+    if (id) {
+      setChangeIndicator(!changeIndicator)
+    }
+  }
+  useEffect(() => {
+    informUI(userId)
+    console.log(changeIndicator)
+
+    dispatch(setEditedUserIdAC(null))
+    console.log(changeIndicator)
+  }, [changeIndicator])
+  ///////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////
 
   return (
     <div className='list-group'>
@@ -93,6 +112,9 @@ export const UserList = ({ users, count, setCount }) => {
         closeModal={closeModal}
         deleteHandler={() => deleteHandler(idOfItemToDelete)}
       />
+      {isModalFormOpen && (
+        <ModalForm informUI={informUI} setUsersS={setUsersS} />
+      )}
     </div>
   )
 }

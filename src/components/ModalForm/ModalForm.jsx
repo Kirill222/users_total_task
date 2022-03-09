@@ -2,7 +2,12 @@ import './ModalForm.css'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
-import { closeModalFormAC } from '../../redux/action-creators'
+
+import {
+  closeModalFormAC,
+  setEditedUserIdAC,
+  setFilteredUsersAC,
+} from '../../redux/action-creators'
 
 const MODAL_STYLES = {
   position: 'fixed',
@@ -24,10 +29,11 @@ const OVERLAY_STYLES = {
   zIndex: 9,
 }
 
-export const ModalForm = () => {
+export const ModalForm = ({ informUI, setUsersS }) => {
   const dispatch = useDispatch()
   const userId = useSelector((state) => state.editedUser.editedUserId)
   const [userToEdit, setUserToEdit] = useState(null)
+  const pageNumber = useSelector((state) => state.page.pageNumber)
 
   const [firstname, setFirstname] = useState(null)
   const [lastname, setLastname] = useState(null)
@@ -74,7 +80,20 @@ export const ModalForm = () => {
       editedUser
     )
 
+    const GetUpdatedUsers = async () => {
+      const response = await axios.get(
+        `https://kirill.totalavengers.com/api/users?page=${pageNumber}`
+      )
+
+      //dispatch(setUserssAC(response.data.items))
+      setUsersS(response.data.items)
+      dispatch(setFilteredUsersAC(response.data.items))
+    }
+
+    GetUpdatedUsers()
+
     dispatch(closeModalFormAC())
+    informUI(userId)
   }
 
   return (

@@ -13,6 +13,7 @@ import {
   setPageNumberAC,
   setUserssAC,
   setFilteredUsersAC,
+  setEditedUserIdAC,
 } from '../../redux/action-creators'
 
 export const UserPage = () => {
@@ -69,28 +70,6 @@ export const UserPage = () => {
     console.log(count)
   }, [count, filterValue])
 
-  const paginationHandler = async (e, page) => {
-    dispatch(setPageNumberAC(page))
-
-    const response = await axios.get(
-      `https://kirill.totalavengers.com/api/users?page=${page}`
-    )
-
-    //dispatch(setUserssAC(response.data.items))
-    setUsersS(response.data.items)
-
-    let sorted
-    if (order === 'asc') {
-      sorted = descOrder(response.data.items, orderBy)
-    } else if (order === 'desc') {
-      sorted = ascOrder(response.data.items, orderBy)
-    } else {
-      sorted = response.data.items
-    }
-    console.log(sorted)
-    dispatch(setFilteredUsersAC(sorted))
-  }
-
   // Filtering logic starts/////////////////////////////////////////////////////////////////////////////
 
   const onFilterChange = (e) => {
@@ -124,6 +103,28 @@ export const UserPage = () => {
   }
 
   // End of ordering logic////////////////////////////////////////////////////////////////////////
+
+  const paginationHandler = async (e, page) => {
+    dispatch(setPageNumberAC(page))
+
+    const response = await axios.get(
+      `https://kirill.totalavengers.com/api/users?page=${page}`
+    )
+
+    //dispatch(setUserssAC(response.data.items))
+    setUsersS(response.data.items)
+
+    let sorted
+    if (order === 'asc') {
+      sorted = descOrder(response.data.items, orderBy)
+    } else if (order === 'desc') {
+      sorted = ascOrder(response.data.items, orderBy)
+    } else {
+      sorted = response.data.items
+    }
+    console.log(sorted)
+    dispatch(setFilteredUsersAC(sorted))
+  }
 
   return (
     <div>
@@ -208,7 +209,12 @@ export const UserPage = () => {
 
       {/* 88888888888888888888888888888888888888888888888 */}
 
-      <UserList users={filteredUsers} setCount={setCount} count={count} />
+      <UserList
+        users={filteredUsers}
+        setCount={setCount}
+        count={count}
+        setUsersS={setUsersS}
+      />
 
       <div className='pagination-div'>
         <Pagination
@@ -218,8 +224,6 @@ export const UserPage = () => {
           onChange={(e, page) => paginationHandler(e, page)}
         />
       </div>
-
-      {isModalFormOpen && <ModalForm />}
     </div>
   )
 }
