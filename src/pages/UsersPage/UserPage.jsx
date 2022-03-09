@@ -128,7 +128,7 @@ export const UserPage = () => {
     <div>
       {/* Filter form starts *************************** */}
 
-      <div className='filter-form' style={{ width: '50%' }}>
+      <div className='filter-form'>
         <form
           className='form-inline d-flex p-2 align-items-center'
           onSubmit={(e) => e.preventDefault()}
@@ -146,6 +146,7 @@ export const UserPage = () => {
             <option value='firstname'>Firstname</option>
             <option value='lastname'>Lastname</option>
             <option value='address'>Address</option>
+            <option value='email'>Email</option>
           </select>
 
           <input
