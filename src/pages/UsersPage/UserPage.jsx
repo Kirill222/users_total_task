@@ -8,11 +8,12 @@ import { UserList } from '../../components/UserList/UserList'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   setPageNumberAC,
-  setUsersAC,
+  setUserssAC,
   setFilteredUsersAC,
 } from '../../redux/action-creators'
 
 export const UserPage = () => {
+  const [usersS, setUsersS] = useState([])
   const users = useSelector((state) => state.users.users)
   const filteredUsers = useSelector((state) => state.users.filteredUsers)
   const [pages, setPages] = useState(0)
@@ -20,7 +21,7 @@ export const UserPage = () => {
   const [orderBy, setOrderBy] = useState(null)
   const [order, setOrder] = useState(null)
   const [filterBy, setFilterBy] = useState(null)
-  const [filterValue, setFiltervalue] = useState('')
+  const [filterValue, setFilterValue] = useState('')
 
   const dispatch = useDispatch()
 
@@ -32,10 +33,12 @@ export const UserPage = () => {
       console.log(response.data.items)
       setPages(response.data.pages)
       setCount(response.data.count)
-      dispatch(setUsersAC(response.data.items))
+      setUsersS(response.data.items)
+      dispatch(setUserssAC(response.data.items))
+      dispatch(setUserssAC(response.data.items))
       dispatch(setFilteredUsersAC(response.data.items))
 
-      return response.data.items
+      //return response.data.items
     }
     getData()
   }, [count])
@@ -51,7 +54,8 @@ export const UserPage = () => {
       `https://kirill.totalavengers.com/api/users?page=${page}`
     )
 
-    dispatch(setUsersAC(response.data.items))
+    //dispatch(setUserssAC(response.data.items))
+    setUsersS(response.data.items)
 
     let sorted
     if (order === 'asc') {
@@ -65,19 +69,22 @@ export const UserPage = () => {
     dispatch(setFilteredUsersAC(sorted))
   }
 
-  //console.log(filteredUsers)
-
   // Filtering logic starts/////////////////////////////////////////////////////////////////////////////
 
   const onFilterChange = (e) => {
-    setFiltervalue(e.target.value)
-    const filtered = users.filter((u) => {
+    setFilterValue(e.target.value)
+    console.log(filterValue)
+
+    const filtered = usersS.filter((u) => {
       const value = u[filterBy]
       if (value.includes(filterValue)) return u
     })
+    console.log(filteredUsers)
     //setFilteredUsers(filtered)
     dispatch(setFilteredUsersAC(filtered))
   }
+
+  console.log(users)
 
   // Filtering logic ends/////////////////////////////////////////////////////////////////////////////
 

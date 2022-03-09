@@ -6,9 +6,9 @@ const initialState = {
 const pageReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_USERS':
-      return { ...initialState, users: action.payload }
+      return { ...initialState, users: [...action.payload] }
     case 'SET_FILTERED_USERS':
-      return { ...initialState, filteredUsers: action.payload }
+      return { ...initialState, filteredUsers: [...action.payload] }
     default:
       return state
   }

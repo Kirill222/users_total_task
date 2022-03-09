@@ -5,7 +5,7 @@ export const setPageNumberAC = (pageNumber) => {
   }
 }
 
-export const setUsersAC = (users) => {
+export const setUserssAC = (users) => {
   return {
     type: 'SET_USERS',
     payload: users,
