@@ -32,6 +32,7 @@ export const UserPage = () => {
 
   const filterRef = useRef()
   const onChangeHandlerRef = () => {
+    if (!filterBy) return
     setFilterValue(filterRef.current.value)
 
     const filtered = usersS.filter((u) => {
