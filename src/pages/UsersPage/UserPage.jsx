@@ -76,8 +76,8 @@ export const UserPage = () => {
     console.log(filterValue)
 
     const filtered = usersS.filter((u) => {
-      const value = u[filterBy]
-      if (value.includes(filterValue)) return u
+      const value = u[filterBy].toLowerCase()
+      if (value.includes(filterValue.toLowerCase())) return u
     })
     console.log(filteredUsers)
     //setFilteredUsers(filtered)
