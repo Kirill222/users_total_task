@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import {
   closeModalFormAC,
-  setEditedUserIdAC,
   setFilteredUsersAC,
 } from '../../redux/action-creators'
 
@@ -32,7 +31,6 @@ const OVERLAY_STYLES = {
 export const ModalForm = ({ informUI, setUsersS }) => {
   const dispatch = useDispatch()
   const userId = useSelector((state) => state.editedUser.editedUserId)
-  const [userToEdit, setUserToEdit] = useState(null)
   const pageNumber = useSelector((state) => state.page.pageNumber)
 
   const [firstname, setFirstname] = useState(null)
@@ -41,6 +39,8 @@ export const ModalForm = ({ informUI, setUsersS }) => {
   const [gender, setGender] = useState(null)
   const [age, setAge] = useState(null)
   const [address, setAddress] = useState(null)
+
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     if (userId) {
@@ -63,8 +63,21 @@ export const ModalForm = ({ informUI, setUsersS }) => {
     return
   }, [])
 
+  // if (
+  //   firstname === null ||
+  //   lastname === null ||
+  //   email === null ||
+  //   gender === null ||
+  //   age === null ||
+  //   address === null
+  // ) {
+  //   setError(true)
+  //   return
+  // }
+
   const submitHandler = async (e) => {
     e.preventDefault()
+    setError(false)
 
     const editedUser = {
       firstname,
@@ -73,6 +86,19 @@ export const ModalForm = ({ informUI, setUsersS }) => {
       gender,
       age,
       address,
+    }
+
+    if (
+      editedUser.firstname === null ||
+      editedUser.lastname === null ||
+      editedUser.email === null ||
+      editedUser.gender === null ||
+      editedUser.age === null ||
+      editedUser.address === null
+    ) {
+      setError(true)
+      return
+      return
     }
 
     await axios.put(
@@ -181,9 +207,7 @@ export const ModalForm = ({ informUI, setUsersS }) => {
                 />
               </label>
               <input type='submit' value='save' />
-              {/* {isError && (
-                <span className='warning'>All fields should be filled in</span>
-              )} */}
+              {error && <span>All fields should be filled in</span>}
             </fieldset>
           </form>
         </div>
