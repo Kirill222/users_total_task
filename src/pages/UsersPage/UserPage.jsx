@@ -130,6 +130,23 @@ export const UserPage = () => {
   const paginationHandler = async (e, page) => {
     dispatch(setPageNumberAC(page))
 
+    if (filterValue.length > 0) {
+      const getData = async () => {
+        const response = await axios.get(
+          `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}&${filterBy}=${filterValue}&page=${page}`
+        )
+        console.log(response.data.items)
+        setPages(response.data.pages)
+        setCount(response.data.count)
+        setUsersS(response.data.items)
+        dispatch(setUserssAC(response.data.items))
+        dispatch(setUserssAC(response.data.items))
+        dispatch(setFilteredUsersAC(response.data.items))
+      }
+      getData()
+      return
+    }
+
     const response = await axios.get(
       `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}&page=${page}`
     )
