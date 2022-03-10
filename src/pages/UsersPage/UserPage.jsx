@@ -48,21 +48,40 @@ export const UserPage = () => {
   const orderByRef = useRef()
   const orderRef = useRef()
   const onOrderByHandlerRef = () => {
-    // setOrderBy(orderByRef.current.value)
-    // setOrder(orderRef.current.value)
-    // const getData = async () => {
-    //   const response = await axios.get(
-    //     `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}`
-    //   )
-    //   console.log(response.data.items)
-    //   setPages(response.data.pages)
-    //   setCount(response.data.count)
-    //   setUsersS(response.data.items)
-    //   dispatch(setUserssAC(response.data.items))
-    //   dispatch(setUserssAC(response.data.items))
-    //   dispatch(setFilteredUsersAC(response.data.items))
-    // }
-    // getData()
+    setOrderBy(orderByRef.current.value)
+    setOrder(orderRef.current.value)
+
+    if (filterValue.length > 0) {
+      const getData = async () => {
+        const response = await axios.get(
+          `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}&${filterBy}=${filterValue}`
+        )
+        console.log(response.data.items)
+        setPages(response.data.pages)
+        setCount(response.data.count)
+        setUsersS(response.data.items)
+        dispatch(setUserssAC(response.data.items))
+        dispatch(setUserssAC(response.data.items))
+        dispatch(setFilteredUsersAC(response.data.items))
+      }
+      getData()
+      return
+    } else {
+      const getData = async () => {
+        const response = await axios.get(
+          `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}`
+        )
+        console.log(response.data.items)
+        setPages(response.data.pages)
+        setCount(response.data.count)
+        setUsersS(response.data.items)
+        dispatch(setUserssAC(response.data.items))
+        dispatch(setUserssAC(response.data.items))
+        dispatch(setFilteredUsersAC(response.data.items))
+      }
+      getData()
+      return
+    }
   }
   useEffect(() => {
     //onOrderByHandlerRef()
