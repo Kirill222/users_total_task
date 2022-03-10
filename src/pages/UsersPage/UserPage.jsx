@@ -18,7 +18,7 @@ export const UserPage = () => {
   const [count, setCount] = useState(0)
   const [orderBy, setOrderBy] = useState('firstname')
   const [order, setOrder] = useState('asc')
-  const [filterBy, setFilterBy] = useState(null)
+  const [filterBy, setFilterBy] = useState('firstname')
   const [filterValue, setFilterValue] = useState('')
   const isModalFormOpen = useSelector(
     (state) => state.modalWindow.isModalFormOpen
@@ -27,30 +27,56 @@ export const UserPage = () => {
 
   /////////////////////////////////////////////////////////////INITIAL USEEFFECT
   useEffect(() => {
-    const getData = async () => {
-      const response = await axios.get(
-        `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}`
-      )
-      console.log(response.data.items)
-      setPages(response.data.pages)
-      setCount(response.data.count)
-      setUsersS(response.data.items)
-      dispatch(setUserssAC(response.data.items))
-      dispatch(setUserssAC(response.data.items))
-      dispatch(setFilteredUsersAC(response.data.items))
+    if (filterValue === '') {
+      const getData = async () => {
+        const response = await axios.get(
+          `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}`
+        )
+        console.log(response.data.items)
+        setPages(response.data.pages)
+        setCount(response.data.count)
+        setUsersS(response.data.items)
+        dispatch(setUserssAC(response.data.items))
+        dispatch(setUserssAC(response.data.items))
+        dispatch(setFilteredUsersAC(response.data.items))
+      }
+      getData()
     }
-    getData()
   }, [count])
 
   //ORDERBY LOGIC
   const orderByRef = useRef()
   const orderRef = useRef()
   const onOrderByHandlerRef = () => {
-    setOrderBy(orderByRef.current.value)
-    setOrder(orderRef.current.value)
+    // setOrderBy(orderByRef.current.value)
+    // setOrder(orderRef.current.value)
+    // const getData = async () => {
+    //   const response = await axios.get(
+    //     `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}`
+    //   )
+    //   console.log(response.data.items)
+    //   setPages(response.data.pages)
+    //   setCount(response.data.count)
+    //   setUsersS(response.data.items)
+    //   dispatch(setUserssAC(response.data.items))
+    //   dispatch(setUserssAC(response.data.items))
+    //   dispatch(setFilteredUsersAC(response.data.items))
+    // }
+    // getData()
+  }
+  useEffect(() => {
+    //onOrderByHandlerRef()
+  }, [orderBy, order])
+
+  //FILTERBY LOGIC
+  const filterByRef = useRef()
+  const filterValueRef = useRef()
+  const onFilterByHandlerRef = () => {
+    setFilterBy(filterByRef.current.value)
+    setFilterValue(filterValueRef.current.value)
     const getData = async () => {
       const response = await axios.get(
-        `https://kirill.totalavengers.com/api/users/?sort=${orderBy}_${order}`
+        `https://kirill.totalavengers.com/api/users/?${filterBy}=${filterValue}`
       )
       console.log(response.data.items)
       setPages(response.data.pages)
@@ -63,25 +89,24 @@ export const UserPage = () => {
     getData()
   }
   useEffect(() => {
-    onOrderByHandlerRef()
-  }, [orderBy, order])
+    onFilterByHandlerRef()
+  }, [filterBy, filterValue])
 
-  const filterRef = useRef()
-  const onChangeHandlerRef = () => {
-    if (!filterBy) return
-    setFilterValue(filterRef.current.value)
+  // const onChangeHandlerRef = () => {
+  //   if (!filterBy) return
+  //   setFilterValue(filterRef.current.value)
 
-    const filtered = usersS.filter((u) => {
-      const value = u[filterBy].toLowerCase()
-      if (value.includes(filterValue.toLowerCase())) return u
-    })
-    console.log(filteredUsers)
-    //setFilteredUsers(filtered)
-    dispatch(setFilteredUsersAC(filtered))
-  }
-  useEffect(() => {
-    onChangeHandlerRef()
-  }, [filterValue])
+  //   const filtered = usersS.filter((u) => {
+  //     const value = u[filterBy].toLowerCase()
+  //     if (value.includes(filterValue.toLowerCase())) return u
+  //   })
+  //   console.log(filteredUsers)
+  //   //setFilteredUsers(filtered)
+  //   dispatch(setFilteredUsersAC(filtered))
+  // }
+  // useEffect(() => {
+  //   onChangeHandlerRef()
+  // }, [filterValue])
 
   const paginationHandler = async (e, page) => {
     dispatch(setPageNumberAC(page))
@@ -107,15 +132,12 @@ export const UserPage = () => {
             onSubmit={(e) => e.preventDefault()}
           >
             <select
-              onChange={(e) => {
-                setFilterBy(e.target.value)
-              }}
+              ref={filterByRef}
+              defaultValue={filterBy}
+              onChange={onFilterByHandlerRef}
               className='form-select w-45 m-3'
               aria-label='Default select example'
             >
-              <option selected disabled hidden>
-                Filter by:
-              </option>
               <option value='firstname'>Firstname</option>
               <option value='lastname'>Lastname</option>
               <option value='address'>Address</option>
@@ -123,14 +145,15 @@ export const UserPage = () => {
             </select>
 
             <input
+              ref={filterValueRef}
+              value={filterValue}
+              onChange={onFilterByHandlerRef}
               type='text'
               className='form-control w-45 m-3'
               id='value'
               placeholder='Value to search'
               name='value'
-              value={filterValue}
-              ref={filterRef}
-              onChange={onChangeHandlerRef}
+              //onChange={onChangeHandlerRef}
             />
           </form>
         </div>
