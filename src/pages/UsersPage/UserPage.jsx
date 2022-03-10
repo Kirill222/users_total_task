@@ -84,7 +84,7 @@ export const UserPage = () => {
     }
   }
   useEffect(() => {
-    //onOrderByHandlerRef()
+    onOrderByHandlerRef()
   }, [orderBy, order])
 
   //FILTERBY LOGIC
@@ -197,7 +197,7 @@ export const UserPage = () => {
 
       {/* Filter form ends **************************** */}
 
-      {/* 88888888888888888888888888888888888888888888888 */}
+      {/* Order form starts */}
 
       <div>
         <h5 style={{ marginLeft: '30px', marginBottom: 0 }}>Order by:</h5>
@@ -233,7 +233,7 @@ export const UserPage = () => {
         </div>
       </div>
 
-      {/* 88888888888888888888888888888888888888888888888 */}
+      {/* Order form ends */}
 
       <UserList
         users={filteredUsers}
