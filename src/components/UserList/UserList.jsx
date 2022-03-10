@@ -7,7 +7,16 @@ import { ModalForm } from '../../components/ModalForm/ModalForm'
 import { useSelector, useDispatch } from 'react-redux'
 import { openModalFormAC, setEditedUserIdAC } from '../../redux/action-creators'
 
-export const UserList = ({ users, count, setCount, setUsersS }) => {
+export const UserList = ({
+  users,
+  count,
+  setCount,
+  setUsersS,
+  orderBy,
+  order,
+  filterBy,
+  filterValue,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [idOfItemToDelete, setIdOfItemToDelete] = useState(null)
   const navigate = useNavigate()
@@ -113,7 +122,14 @@ export const UserList = ({ users, count, setCount, setUsersS }) => {
         deleteHandler={() => deleteHandler(idOfItemToDelete)}
       />
       {isModalFormOpen && (
-        <ModalForm informUI={informUI} setUsersS={setUsersS} />
+        <ModalForm
+          informUI={informUI}
+          setUsersS={setUsersS}
+          orderBy={orderBy}
+          order={order}
+          filterBy={filterBy}
+          filterValue={filterValue}
+        />
       )}
     </div>
   )

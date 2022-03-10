@@ -28,7 +28,14 @@ const OVERLAY_STYLES = {
   zIndex: 9,
 }
 
-export const ModalForm = ({ informUI, setUsersS }) => {
+export const ModalForm = ({
+  informUI,
+  setUsersS,
+  orderBy,
+  order,
+  filterBy,
+  filterValue,
+}) => {
   const dispatch = useDispatch()
   const userId = useSelector((state) => state.editedUser.editedUserId)
   const pageNumber = useSelector((state) => state.page.pageNumber)
@@ -108,7 +115,7 @@ export const ModalForm = ({ informUI, setUsersS }) => {
 
     const GetUpdatedUsers = async () => {
       const response = await axios.get(
-        `https://kirill.totalavengers.com/api/users?page=${pageNumber}`
+        `https://kirill.totalavengers.com/api/users?sort=${orderBy}_${order}&${filterBy}=${filterValue}&page=${pageNumber}`
       )
 
       //dispatch(setUserssAC(response.data.items))

@@ -240,6 +240,10 @@ export const UserPage = () => {
         setCount={setCount}
         count={count}
         setUsersS={setUsersS}
+        orderBy={orderBy}
+        order={order}
+        filterBy={filterBy}
+        filterValue={filterValue}
       />
 
       <div className='pagination-div'>
